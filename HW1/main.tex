@@ -1,0 +1,178 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{textcomp}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{mathcomp}
+\usepackage{amsmath,amsfonts,bm}
+\usepackage{amsthm, amssymb, mathtools}
+\usepackage{mathabx, mathrsfs, dsfont}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+
+\usepackage{booktabs, multirow, multicol}
+\usepackage{tabularx}
+
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear}
+
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+\DeclareMathOperator{\Softmax}{Softmax}
+
+\title{STATS 217 homework 1}
+\author{Siping Wang 006405652}
+\date{July 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{1.10}
+
+Let $E_1$ denotes the event that the number of rolling ends up with an odd number. \\
+Let $E_2$ denotes the event that the number of rolling ends up with an even number. \\
+Let $e_1$ denotes the outcome number of the first roll. \\\\
+Then, we have: 
+\begin{equation}
+    P(E_1) + P(E_2) = 1
+\end{equation}
+and
+\begin{equation*}
+    P(E_1) = P(e_1 = 3) \times P(E_1|e_1 = 3) + P(e_1 \not= 3) \times P(E_1|e_1 \not= 3).
+\end{equation*}
+Since that 
+\begin{equation*}
+    P(E_1|e_1 \not= 3) = P(E_2)
+\end{equation*}
+and
+\begin{equation*}
+    P(E_1|e_1 = 3) = 1,
+\end{equation*}
+we have
+\begin{equation}
+    P(E_1) = \frac{1}{6} \times 1 + \frac{5}{6} \times P(E_2)
+\end{equation}
+Solving (1) and (2), we can get that
+\begin{equation*}
+    \left\{
+    \begin{array}{cc}
+         P(E_1) = \frac{6}{11}&  \\
+         &   \\
+         P(E_2) = \frac{5}{11}&  
+    \end{array}
+    \right.
+\end{equation*}
+So the probability that an even number of rolls is needed is $\frac{5}{11}$.
+
+\section{1.17}
+
+\begin{align*}
+    E(X|X > 2) &= \sum\limits_x x P(X=x|X>2)  \\
+    &= \sum\limits_x \frac{P(X = x, X > 2)}{P(X > 2)} \\
+    &= \frac{\sum\limits_{x = 3}^\infty x P(X = x)}{\sum\limits_{x = 3}^\infty P(X = x)} \\
+    &= \frac{E(X) - P(X = 1) - 2 P(X = 2)}{1 - P(X = 0) - P(X = 1) - P(X = 2)}.
+\end{align*}
+Since that
+\begin{align*}
+    E(X) &= \lambda = 3, \\
+    P(x = 0) &= \frac{e^{-3}}{0!} = e^{-3}, \\
+    P(x = 1) &= \frac{3 \times e^{-3}}{1!} = 3 \times e^{-3}, \\
+    P(x = 2) &= \frac{3^2 \times e^{-3}}{2!} = \frac{9 \times e^{-3}}{2},
+\end{align*}
+we have
+\begin{align*}
+    E(X|X > 2) &= \frac{3 - 12 e^{-3}}{1 - \frac{17}{2} e^{-3}} \\
+    &\approx 4.16525.
+\end{align*}
+
+\section{1.22}
+\subsection{(b)}
+\begin{align*}
+    E(Y|X) &= \int_0^x y f_{Y|X}(y|X = x) dy \\
+    &= \int_0^x y \frac{f_{xy}(x, y)}{f_X(x)} dy \\
+    &= \int_0^x y \frac{f_{xy}(x, y)}{\int_0^x f_{xy}(x, y) dy} dy.
+\end{align*}
+Since that $(X, Y)$ is uniformly distributed on the triangle, 
+\begin{equation*}
+    f_{xy}(x, y) = \frac{1}{S_{\Delta}} = \frac{1}{\frac{1}{2}} = 2.
+\end{equation*}
+Then
+\begin{align*}
+    E(Y|X) &= \int_0^x y \frac{2}{\int_0^x 2 dy} dy \\
+    &= \int_0^x y \frac{2}{2x} dy \\
+    &= \frac{1}{x}\times \frac{1}{2} x^2 \\
+    &= \frac{x}{2}.
+\end{align*}
+
+\subsection{(c)}
+\begin{align*}
+    E(Y|X) &= \int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} y f_{Y|X}(y|X = x) dy \\
+    &= \int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} y \frac{f_{xy}(x, y)}{f_X(x)} dy \\
+    &= \int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} y \frac{f_{xy}(x, y)}{\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} f_{xy}(x, y) dy} dy.
+\end{align*}
+Since that $(X, Y)$ is uniformly distributed on the disc, 
+\begin{equation*}
+    f_{xy}(x, y) = \frac{1}{S_{O}} = \frac{1}{\pi}.
+\end{equation*}
+Then
+\begin{align*}
+    E(Y|X) &= \int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} y \frac{\frac{1}{\pi}}{\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} \frac{1}{\pi} dy} dy \\
+    &= \int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} y \frac{1}{2\sqrt{1-x^2}} dy \\
+    &= \frac{1}{2\sqrt{1-x^2}} \times 0 \\
+    &= 0.
+\end{align*}
+
+\section{1.26}
+\begin{align*}
+    P(Y<2) &= \int_0^2 f_Y(y) dy \\
+    &= \int_0^2 dy \int_y^{\infty} f_{xy}(x, y) dx \\
+    &= \int_0^2 dy \int_y^{\infty} f_X(x) f_{Y|X}(Y|X = x) dx \\
+    &= \int_0^2 dy \int_y^{\infty} x e^{-x} \frac{1}{x} dx \\
+    &= \int_0^2 dy \int_y^{\infty} e^{-x} dx \\
+    &= \int_0^2 \frac{1}{e^y} dy \\
+    &= 1 - \frac{1}{e^2} \approx 0.865.
+\end{align*}
+
+\section{1.31}
+Let $e_1$ denotes the result of the first trail. That is, $e_1 = 1$ means success, otherwise $e_1 = 0$. \\
+Since that 
+\begin{equation*}
+    X \sim Ge(p),
+\end{equation*}
+we have
+\begin{align}
+    E(X) &= P(e_1 = 1) \times E(X|e_1 = 1) + P(e_1 = 0) \times E(X|e_1 = 0) \\
+    &= p E(X|e_1 = 1) + (1 - p) E(X|e_1 = 0) \\
+    &= p \times 1 + (1 - p) (E(X) + 1).
+\end{align}
+(5) solves that
+\begin{equation*}
+    E(X) = \frac{1}{p}.
+\end{equation*}
+Since that
+\begin{align*}
+    E(Var(X|e_1)) &= (1 - p) Var(X|e_1 = 0) + p Var(X|e_1 = 1) \\
+    &= (1 - p) Var(X), \\
+\end{align*}
+and
+\begin{align*}
+    Var(E(X|e_1)) &= E((E(X|e_1))^2) - (E(E(X|e_1)))^2 \\
+    &= E((E(X|e_1))^2) - \frac{1}{p^2} \\
+    &= (1 - p) E((E(X|e_1 = 0))^2) + p E((E(X|e_1 = 1))^2) - \frac{1}{p^2} \\
+    &= (1 - p)E((E(X) + 1)^2) + p - \frac{1}{p^2} \\
+    &= (1 - p) (\frac{1}{p} + 1)^2 + p - \frac{1}{p^2} \\
+    &= \frac{1 - p}{p},
+\end{align*}
+we have
+\begin{align}
+    Var(X) &= E(Var(X|e_1)) + Var(E(X|e_1)) \\
+    &= (1 - p) Var(X) + \frac{1 - p}{p}. 
+\end{align}
+(7) solves that
+\begin{equation*}
+    Var(X) = \frac{1 - p}{p^2}.
+\end{equation*}
+
+\end{document}
