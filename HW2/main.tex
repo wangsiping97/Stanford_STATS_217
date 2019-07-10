@@ -1,0 +1,135 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{textcomp}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{mathcomp}
+\usepackage{amsmath,amsfonts,bm}
+\usepackage{amsthm, amssymb, mathtools}
+\usepackage{mathabx, mathrsfs, dsfont}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+
+\usepackage{booktabs, multirow, multicol}
+\usepackage{tabularx}
+
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear}
+
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+\DeclareMathOperator{\Softmax}{Softmax}
+
+\title{STATS 217 homework 2}
+\author{Siping Wang}
+\date{July 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{}
+\begin{align*}
+    P(X = 1) &= \frac{P^{(1)}(0)}{1!} = \frac{(\frac{1}{2-s})'\big|_{s=0}}{1} = \frac{1}{4} \\
+    P(X = 2) &= \frac{P^{(2)}(0)}{1!} = \frac{(\frac{1}{2-s})''\big|_{s=0}}{2} = \frac{1}{8} \\
+    V(X) &= P''(1) + P'(1) - [P'(1)]^2 \\
+    &= \frac{2}{(2-s)^3} \bigg|_{s=1} + \frac{1}{(2-s)^2} \bigg|_{s=1} - \Big(\frac{1}{(2-s)^2}\Big)^2\bigg|_{s=1} = 2
+\end{align*}
+
+\section{}
+Since  $Y$ is binomial $(n, U )$ where U is uniform $[0, 1]$, \\
+We have
+\begin{align*}
+    P(Y = k| U) &= \dbinom{n}{k} U^k (1-U)^{n - k}, \\
+    f_U(u) &= 1. 
+\end{align*}
+So
+\begin{align*}
+    P(Y = k) &= \int_0^1 \dbinom{n}{k} u^k (1-u)^{n-k} f_U(u) du \\
+    &= \dbinom{n}{k} \int_0^1 u^k (1-u)^{n-k} du \\
+    &= \frac{n!}{k!(n-k)!} \int_0^1 u^k (1-u)^{n-k} du \\
+    &= \frac{\Gamma (n+1)}{\Gamma (k+1) \Gamma (n-k+1)} B(k+1, n-k+1) \\
+    &= \frac{1}{n+1} \frac{B(k+1, n-k+1)}{B(k+1, n-k+1)} \\
+    &= \frac{1}{n+1} .
+\end{align*}
+$\because$ The range of $Y$ is $[0, n]$ and $Y$ is an integer \\
+$\therefore$ $Y$ is uniform on ${0, 1, 2, 3, ..., n}$.
+
+\section{}
+Let $X_{n, i}$ be a random variable denoting the number of direct successors of member $i$ in period $n$, where $X_{n, i}$ are $i, i, d$ random variables over all $n \in {\{0, 1, 2, ...\}}$ and $i \in {\{1, ..., Z_n\}}$. \\
+Then we have
+\begin{equation*}
+    Z_{n+1} = \sum\limits_{i=1}^{Z_{n-1}} X_{n-1, i}.
+\end{equation*}
+$\because Z_0 = 1$ \\
+$\therefore Z_1 = X_{0, 1}$ \\
+$\therefore E(X_{n, i}) = E(X_{0, 1}) = E(Z_1) = \mu$, for all $n \in {\{0, 1, 2, ...\}}$ and $i \in {\{1, ..., Z_n\}}$.\\
+$\therefore$
+\begin{align*}
+    E(Z_m Z_n) &= E((\sum\limits_{i=1}^{Z_{m-1}} X_{m-1, i})(\sum\limits_{i=1}^{Z_{n-1}} X_{n-1, i})) \\
+    &= E(\sum\limits_{i=1}^{Z_{m-1}} \sum\limits_{j=1}^{Z_{n-1}} X_{m-1, i} X_{n-1, j}) \\
+    &= E(Z_{m-1} Z_{n-1}) \cdot \mu^2
+\end{align*}
+Similarly, 
+\begin{equation*}
+    E(Z_m^2) = E((\sum\limits_{i=1}^{Z_{m-1}} X_{m-1, i})^2) = E(Z_{m-1}^2) \cdot \mu^2. 
+\end{equation*}
+$\therefore$
+\begin{align*}
+    \frac{E(Z_m Z_n)}{E(Z_m^2)} &= \frac{E(Z_{m-1} Z_{n-1})}{E(Z_{m-1}^2)} = ... = \frac{E(Z_{n-m} Z_0)}{E(Z_0^2)} \\
+    &= E(Z_{n-m}) = E\big((\sum\limits_{i=1}^{Z_{n-m-1}} X_{n-m-1, i})\big) \\
+    &= \mu E(Z_{n-m-1}) = ... = \mu ^{n - m}.
+\end{align*}
+Therefore, 
+\begin{equation*}
+    E(Z_n Z_m) = \mu^{n-m} E(Z_m^2).
+\end{equation*}
+
+\section{}
+Let $X_i$ denotes the number of chicks hatched by the $i^{th}$ egg. \\
+Then $X_i \sim Bernoulli(p)$. \\
+Therefore, 
+\begin{equation*}
+    P_{X_i}(s) = P_X(s) = 1-p+ps. 
+\end{equation*}
+Since $N \sim Poisson(\lambda)$,
+\begin{equation*}
+    P_N(s) = e^{\lambda(s-1)}.
+\end{equation*}
+Since
+\begin{equation*}
+    K = \sum\limits_{i = 1}^N X_i,
+\end{equation*}
+we have
+\begin{equation*}
+    P_K(s) = P_N(P_X(s)) = e^{\lambda (1 - p + ps - 1)} = e^{p \lambda (s - 1)}. 
+\end{equation*}
+According to the uniqueness of $pgf$, $K$ has a poisson distribution with parameter = $p \lambda$. 
+
+\section{}
+\subsection{}
+\begin{align*}
+    P_X(s) &= \sum\limits_{k = 0}^\infty P(X = k) \cdot s^k = p \sum\limits_{k = 0}^\infty (qs)^k \\
+    &= \frac{p}{1 - qs}
+\end{align*}
+where $|s| < \frac{1}{q}$.
+\subsection{}
+According to the information, we have
+\begin{equation*}
+    E(s^X|\Lambda) = \sum\limits_{n=0}^\infty \frac{(s \Lambda)^n}{n!} = e^{\Lambda (s-1)}.
+\end{equation*}
+Therefore
+\begin{align*}
+    P_X(s) &= E(s^X) = E(E(s^X|\Lambda)) \\
+    &= \int_0^\infty e^{\lambda (s - 1)} \mu e^{- \mu \lambda} d \lambda \\
+    &= \frac{\mu}{s - \mu - 1} e^{\lambda (s - \mu - 1)} \Big|_0^\infty \\
+    &= \frac{\mu}{\mu + 1 - s} \\
+    &= \frac{\frac{\mu}{\mu + 1}}{1 - \frac{1}{\mu+1} s}.
+\end{align*}
+Let $p = \frac{\mu}{\mu+1}$, then
+\begin{equation*}
+    P_X(s) = \frac{p}{1 - (1 - p)s}.
+\end{equation*}
+So $X$ has the distribution described in \textbf{5.1}. 
+\end{document}
