@@ -1,0 +1,226 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{textcomp}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{mathcomp}
+\usepackage{amsmath,amsfonts,bm}
+\usepackage{amsthm, amssymb, mathtools}
+\usepackage{mathabx, mathrsfs, dsfont}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+
+\usepackage{booktabs, multirow, multicol}
+\usepackage{tabularx}
+
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear}
+
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+\DeclareMathOperator{\Softmax}{Softmax}
+
+\title{STAT 217 homework 3}
+\author{Siping Wang}
+\date{July 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{2.6}
+\subsection{}
+Since
+\begin{align*}
+    X_n&=max\{R_0, R_1, ..., R_n\}\\
+    X_{n-1}&=max\{R_0, R_1, ..., R_{n-1}\}
+\end{align*}
+We have
+\begin{align*}
+    X_n = max\{X_{n-1}, R_n\}
+\end{align*}
+So
+\begin{align*}
+    P(X_n&=x_n|X_0=x_0, X_1=x_1,...,X_{n-1}=x_{n-1}) \\
+    &= P(X_n=x_n|X_{n-1}=x_{n-1}).
+\end{align*}
+So $X_0, X_1, ...,X_n$ is a Markov chain, with the state space= $\{1, 2, 3, 4\}$.
+The transition matrix is as below:
+\begin{align*}
+    &\begin{matrix}
+    &1&2&3&4
+    \end{matrix}\\
+    P=
+    \begin{matrix}
+    1 \\ 2 \\ 3 \\ 4
+    \end{matrix}
+    &\begin{pmatrix}
+    \frac{1}{4}&\frac{1}{4}&\frac{1}{4}&\frac{1}{4} \\
+    0&\frac{1}{2}&\frac{1}{4}&\frac{1}{4} \\
+    0&0&\frac{3}{4}&\frac{1}{4}\\
+    0&0&0&1
+    \end{pmatrix}
+\end{align*}
+\subsection{}
+\begin{align*}
+    P(X_3 \ge 3) &= 1 - P(X_3 \le 2) \\
+    &= 1-P(max\{R_0, R_1, R_2, R_3\} \le 2) \\
+    &= 1-P(R_0 \le 2)P(R_1 \le 2)P(R_2 \le 2)P(R_3 \le 2) \\
+    &= 1-(\frac{1}{2})^4 \\
+    &= \frac{15}{16}
+\end{align*}
+\section{2.11}
+\subsection{}
+The state space is $\{0, 1, 2, 3, 4, 5\}$.\\
+So the transition matrix is
+\begin{equation*}
+    P=
+    \begin{pmatrix}
+    states&0&1&2&3&4&5\\
+    0&(\frac{5}{6})^5&5(\frac{1}{6})(\frac{5}{6})^4&10(\frac{1}{6})^2(\frac{5}{6})^3&10(\frac{1}{6})^3(\frac{5}{6})^2&5(\frac{1}{6})^4(\frac{5}{6})&(\frac{1}{6})^5 \\
+    1&0&(\frac{5}{6})^4&4(\frac{1}{6})(\frac{5}{6})^3&6(\frac{1}{6})^2(\frac{5}{6})^2&4(\frac{1}{6})^3(\frac{5}{6})&(\frac{1}{6})^4 \\
+    2&0&0&(\frac{5}{6})^3&3(\frac{1}{6})(\frac{5}{6})^2&3(\frac{1}{6})^2(\frac{5}{6})&(\frac{1}{6})^3 \\
+    3&0&0&0&(\frac{5}{6})^2&2(\frac{1}{6})(\frac{5}{6})&(\frac{1}{6})^2\\
+    4&0&0&0&0&\frac{5}{6}&\frac{1}{6} \\
+    5&0&0&0&0&0&1
+    \end{pmatrix}
+\end{equation*}
+\subsection{}
+From \textbf{2.1}, we can calculate $P^3$, which is
+\begin{equation*}
+    P^3=
+    \begin{pmatrix}
+    states&0&1&2&3&4&5\\
+    0&0.0649&0.2363&0.3440&0.2504&0.0912&0.0133 \\
+    1&0&0.1122&0.3266&0.3567&0.1731&0.0315 \\
+    2&0&0&0.1938&0.4233&0.3081&0.0748 \\
+    3&0&0&0&0.3349&0.4876&0.1775 \\
+    4&0&0&0&0&0.5787&0.4213 \\
+    5&0&0&0&0&0&1
+    \end{pmatrix}
+\end{equation*}
+So $P^3_{0,5}=0.0133$.
+\subsection{}
+\begin{equation*}
+    P^{100}=
+    \begin{pmatrix}
+    states&0&1&2&3&4&5\\
+    0&0&0&0&0&0&1\\
+    1&0&0&0&0&0&1\\
+    2&0&0&0&0&0&1\\
+    3&0&0&0&0&0&1\\
+    4&0&0&0&0&0&1\\
+    5&0&0&0&0&0&1
+    \end{pmatrix}
+\end{equation*}
+\section{2.12}
+$X_n$ has possible states $\{0,1,2,...,k\}$ which are the number of blue balls in the left urn.\\
+$P(X_{n+1} = k)$ depends only on the number of blue balls in left urn before the $(n+1)$th trial i.e. by the value $X_n$, so we have a Markov chain.\\
+Suppose $X_n=j$ then the left urn has $j$ blue balls and $k-j$ red balls in the left urn. Also, the right urn will have $k-j$ blue balls and $j$ red balls (because total blue or red balls are $k$)\\
+The possible outcomes from the next trial are:
+\begin{itemize}
+    \item Blue ball from left urn and blue ball from right urn are selected with probability
+    \begin{equation*}
+        \frac{j}{k}\cdot\frac{k-j}{k}=\frac{j(k-j)}{k^2}
+    \end{equation*}
+    \item Blue ball from left urn and red ball from right urn are selected with probability
+    \begin{equation*}
+        \frac{j}{k}\cdot\frac{j}{k}=\frac{j^2}{k^2}
+    \end{equation*}
+    \item Red ball from left urn and blue ball from right urn are selected with probability
+    \begin{equation*}
+        \frac{k-j}{k}\cdot\frac{k-j}{k}=\frac{(k-j)^2}{k^2}
+    \end{equation*}
+    \item Red ball from left urn and red ball from right urn are selected with probability
+    \begin{equation*}
+        \frac{k-j}{k}\cdot\frac{j}{k}=\frac{j(k-j)}{k^2}
+    \end{equation*}
+\end{itemize}
+So, the transition probabilities for $X_n=j$ are
+\begin{align*}
+    &P(X_{n+1}=j|X_n=j)=\frac{2j(k-j)}{k^2}\\
+    &P(X_{n+1}=j-1|X_n=j)=\frac{j^2}{k^2} \\
+    &P(X_{n+1}=j+1|X_n=j)=\frac{(k-j)^2}{k^2}
+\end{align*}
+So the transition matrix is
+\begin{equation*}
+    P= \frac{1}{k^2}
+    \begin{pmatrix}
+    states&0&1&2&3&...&k\\
+    0&0&k^2&0&0&...&0\\
+    1&1&2(k-1)&(k-1)^2&0&...&0\\
+    2&0&4&4(k-2)&(k-2)^2&...&0\\
+    3&0&0&9&6(k-3)&...&0\\
+    \vdots&...&...&...&...&...\\
+    k-1&0&0&0&0&...&1\\
+    k&0&0&0&...&k^2&0
+    \end{pmatrix}
+\end{equation*}
+\section{2.13}
+The state space is the set of all permutations.\\
+So the transition matrix is
+\begin{align*}
+    P=
+    \begin{pmatrix}
+    states&abc&acb&bac&bca&cab&cba\\
+    abc&P_a&P_c&P_b&0&0&0 \\
+    acb&P_b&P_a&0&0&P_c&0 \\
+    bac&P_a&0&P_b&P_c&0&0 \\
+    bca&0&0&P_a&P_b&0&P_c \\
+    cab&0&P_a&0&0&P_c&P_b \\
+    cba&0&0&0&P_b&P_a&P_c
+    \end{pmatrix}
+\end{align*}
+\section{2.14}
+\subsection{}
+The state of transition matrix be $\{0, 1, 2, ..., k\}$ which denotes the numbers $q$ unique songs played. \\
+The transition probability from state $m$ to state $m+1$ is $\frac{k-m}{k}$; the transition probability from state $m$ to state $m$ is $\frac{m}{k}$. \\
+So, we have
+\begin{align*}
+    P(X_{m+1&=j|X_m=x_m, X_{m-1}=x_{m-1}, ..., X_0=0} \\
+    &= P(X_{m+1}=j|X_m=x_m),
+\end{align*}
+so $X_0, X_1, ...$ is a Markov chain. the transition matrix is
+\begin{equation*}
+    P=
+    \begin{pmatrix}
+    states&0&1&2&...&k-1&k\\
+    0&0&1&0&...&0&0\\
+    1&0&\frac{1}{k}&\frac{k-1}{k}&...&0&0\\
+    2&0&0&\frac{2}{k}&...&0&0\\
+    \vdots&...&...&...&...&0&0\\
+    k-1&0&0&0&...&\frac{k-1}{k}&\frac{1}{k}\\
+    k&0&0&0&...&0&1
+    \end{pmatrix}
+\end{equation*}
+\subsection{}
+For $k=4$, the transition matrix is
+\begin{equation*}
+    P=
+    \begin{pmatrix}
+    states&0&1&2&3&4\\
+    0&0&1&0&0&0\\
+    1&0&\frac{1}{4}&\frac{3}{4}&0&0\\
+    2&0&0&\frac{1}{2}&\frac{1}{2}&0\\
+    3&0&0&0&\frac{3}{4}&\frac{1}{4}\\
+    4&0&0&0&0&1
+    \end{pmatrix}
+\end{equation*}
+then, we can calculate that 
+\begin{equation*}
+    P^6=
+    \begin{pmatrix}
+    states&0&1&2&3&4\\
+    0&0&0.00098&0.09082&0.52734&0.38086\\
+    1&0&0.00024&0.04614&0.44092&0.51270\\
+    2&0&0&0.01562&0.32471&0.65967\\
+    3&0&0&0&0.17798&0.82202\\
+    4&0&0&0&0&1
+    \end{pmatrix},
+\end{equation*}
+therefore,
+\begin{equation*}
+    P(X_6=4|X_0=0)=P^6_{0,4}=0.38086.
+\end{equation*}
+\end{document}
