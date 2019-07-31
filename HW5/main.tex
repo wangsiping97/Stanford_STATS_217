@@ -1,0 +1,268 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{textcomp}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{mathcomp}
+\usepackage{amsmath,amsfonts,bm}
+\usepackage{cases}
+\usepackage{amsthm, amssymb, mathtools}
+\usepackage{mathabx, mathrsfs, dsfont}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+
+\usepackage{booktabs, multirow, multicol}
+\usepackage{tabularx}
+
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear}
+
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+\DeclareMathOperator{\Softmax}{Softmax}
+
+\title{STAT 217 homework 5}
+\author{Siping Wang}
+\date{July 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{3.25}
+\subsection{}
+\textbf{Case: k=2}\\
+The transition matrix is
+\begin{equation*}
+    P=
+    \begin{pmatrix}
+    states&0&1&2\\
+    0&0&1&0\\
+    1&\frac{1}{4}&\frac{1}{2}&\frac{1}{4}\\
+    2&0&1&0\\
+    \end{pmatrix}
+\end{equation*}
+The stationary distribution satisfies
+\begin{equation}
+    \pi P = \pi
+\end{equation}
+Solving \textbf{(1)}, we have
+\begin{equation*}
+    \pi = (\frac{1}{6}, \frac{2}{3}, \frac{1}{6}).
+\end{equation*}
+\textbf{Case: k=3}\\
+The transition matrix is
+\begin{equation*}
+    P=
+    \begin{pmatrix}
+    states&0&1&2&3\\
+    0&0&1&0&0\\
+    1&\frac{1}{9}&\frac{4}{9}&\frac{4}{9}&0\\
+    2&0&\frac{4}{9}&\frac{4}{9}&\frac{1}{9}\\
+    3&0&0&1&0&
+    \end{pmatrix}
+\end{equation*}
+The stationary distribution satisfies
+\begin{equation}
+    \pi P = \pi
+\end{equation}
+Solving \textbf{(1)}, we have
+\begin{equation*}
+    \pi = (\frac{1}{20}, \frac{9}{20}, \frac{9}{20}, \frac{1}{20}).
+\end{equation*}
+\subsection{}
+From \textbf{Exercise 2.12}, we know that
+\begin{align*}
+    P_{ij} = \frac{1}{k^2}
+    \begin{cases}
+    (k-j+1)^2&\quad i=j-1 \\
+    2j(k-j)&\quad i=j \\
+    (j+1)^2&\quad i=j+1.
+    \end{cases}
+\end{align*}
+If $\pi_j = \dbinom{k}{j}^2 / \dbinom{2k}{k}$, then we have
+\begin{itemize}
+    \item $j \in [1, k-1]$
+        \begin{align*}
+            \pi_j &= \sum_{i=0}^k \pi_i P_{ij} \\
+            &= \frac{\dbinom{k}{j-1}^2}{\dbinom{2k}{k}} \frac{(k-j+1)^2}{k^2} + \frac{\dbinom{k}{j}^2}{\dbinom{2k}{k}} \frac{2j(k-j)}{k^2} + \frac{\dbinom{k}{j+1}^2}{\dbinom{2k}{k}} \frac{(j+1)^2}{k^2} \\
+            &= \frac{\dbinom{k}{j}^2}{\dbinom{2k}{k}} (\frac{j^2}{(k-j+1)^2}\frac{(k-j+1)^2}{k^2}+\frac{2j(k-j)}{k^2}+\frac{(k-j)^2}{(j+1)^2}\frac{(j+1)^2}{k^2}) \\
+            &= \frac{\dbinom{k}{j}^2}{\dbinom{2k}{k}} \frac{j^2+2j(k-j)+(k-j)^2}{k^2} \\
+            &= \frac{\dbinom{k}{j}^2}{\dbinom{2k}{k}} \frac{(j+k-j)^2}{k^2} \\
+            &= \frac{\dbinom{k}{j}^2}{\dbinom{2k}{k}} = \pi_j.
+        \end{align*}
+    \item $j=0$
+        \begin{align*}
+            \pi_0 &= \sum_{i=0}^k \pi_i P_{i0} = \pi_1P_{10} \\
+            &= \frac{\dbinom{k}{1}^2}{\dbinom{2k}{k}} \frac{1}{k^2} \\
+            &= \frac{1}{\dbinom{2k}{k}}=\frac{\dbinom{k}{0}^2}{\dbinom{2k}{k}}
+        \end{align*}
+    \item $j=k$
+        \begin{align*}
+            \pi_k &= \sum_{i=0}^k \pi_i P_{ik} = \pi_{k-1}P_{k-1k} \\
+            &= \frac{\dbinom{k}{k-1}^2}{\dbinom{2k}{k}} \frac{1}{k^2} \\
+            &= \frac{1}{\dbinom{2k}{k}}=\frac{\dbinom{k}{k}^2}{\dbinom{2k}{k}}
+        \end{align*}
+\end{itemize}
+
+Proved.
+\section{3.27}
+\subsection{}
+\textbf{A Markov chain is called irreducible if it has exactly one communication class. That is, all states communicate with each other.} \\
+$\forall m, n \in N$, we can first go from $m$ to $0$, then from $0$ to $1$, and so on, finally to $n$. \\
+Thus, for all $m, n \in N$, $\sum\limits_i P_{mn}^i > 0$. So the chain is irreducible. \\
+\textbf{A Markov chain is called aperiodic if it is irreducible and all states have period equal to 1. }\\
+$\forall i \in N$, we can first go from $i$ to $i+1$, then to $0$, then to $1$, and so on, finally to $i$. This costs $i+2$ steps. So $P_{ii}^{i+2} > 0$. \\
+$\forall i \in N$, we can first go from $i$ to $i+1$, then to $i+2$, then to $0$, then to $1$, and so on, finally to $i$. This costs $i+3$ steps. So $P_{ii}^{i+3} > 0$. \\
+Thus, $d(i)=gcd\{n>0:P_{ii}^n>0\} \leq gcd\{i+2, i+3\}=1$, so $d(i)=1$, for all $i$. \\
+So the chain is aperiodic. 
+\subsection{}
+\begin{align*}
+    P(T_0=1|X_0=0)&=0 \\
+    P(T_0=2|X_0=0)&=\frac{1}{2} \\
+    P(T_0=3|X_0=0)&=\frac{1}{2}\times \frac{1}{3} \\
+    P(T_0=4|X_0=0)&=\frac{1}{2}\times \frac{2}{3} \times \frac{1}{4} = \frac{1}{3} \times \frac{1}{4} \\
+    ...\\
+    P(T_0=n|X_0=0)&=\frac{1}{n-1} \times \frac{1}{n} \\
+    ...
+\end{align*}
+So we have
+\begin{align*}
+    f_0&=P(T_0 < \infty|X_0=0)\\
+    &=\sum_{i=1}^\infty P(T_0=i|X_0=0) \\
+    &=0+\frac{1}{2}+\frac{1}{2}\times \frac{1}{3} + \frac{1}{3} \times \frac{1}{4}+...+\frac{1}{n-1} \times \frac{1}{n} +... \\
+    &=\frac{1}{2}+\frac{1}{2}-\frac{1}{3}+\frac{1}{3}-\frac{1}{4}+... \\
+    &=1.
+\end{align*}
+So the chain is recurrent. 
+\subsection{}
+\begin{align*}
+    E(T_0|X_0=0)&=\sum_{n=1}^\infty nP(T_0 = n|X_0=0)\\
+    &=2 \times \frac{1}{2} + 3\times \frac{1}{2}\times \frac{1}{3}+ 4\times \frac{1}{3} \times \frac{1}{4}+...\\
+    &= 1+\frac{1}{2}+\frac{1}{3}+ ...+\frac{1}{n}+... \\
+    &= \infty.
+\end{align*}
+So the chain is null recurrent. 
+\section{3.30}
+\subsection{If the walk is periodic}
+\textbf{A Markov chain is called periodic if it is irreducible and all states have period greater than 1.}\\
+Assume the graph is not bipartite. \\
+Then there must by an edge on the graph joining two vertices that are in the same color. Let $E_1$, $E_2$ denote the two vertices. \\
+Consider the starting point to be $E_1$. Then going back to $E_1$ can cost at least 2 steps, i.e., $E_1 \to E_2 \to E_1$. And it can also cost an odd number of steps ($2k+1$), i.e., going to another neighbour of $E_1$ and finally coming back to $E_1$ from $E_2$. \\
+So $d(E_1) \leq gcd\{2, 2k+1\}=1.$ The chain can't be periodic. \\
+So the graph must be bipartite.
+\subsection{If the graph is bipartite}
+Let $E$ denotes the starting point. \\
+Since the graph is bipartite, starting from $E$ then coming back to $E$ always costs an even number of steps. So $d(E) \geq 2$, for all $E$s. \\
+So the chain is periodic. 
+\section{3.36}
+\subsection{}
+\begin{align*}
+    &\because The\ chain\ is\ in\ stationary\ distribution, \\
+    &\therefore P(X_m=i)=\pi_i \quad i \in \{1, 2, ...,k\}, \forall m \in N^+. 
+\end{align*}
+Therefore, 
+\begin{align*}
+    Cov(X_m, X_{m+n}) &= E(X_mX_{m+n})-E(X_m)E(X_{m+n}) \\
+    &= \sum_{i,j \in \{1,2,...,k\}} ijP(X_m=i,X_{m+n}=j)-\sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j \\
+    &= \sum_{i,j \in \{1,2,...,k\}} ijP(X_{m+n}=j|X_m=i)P(X_m=i)-\sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j \\
+    &=\sum_{i,j \in \{1,2,...,k\}} ijP(X_{n}=j|X_0=i)P(X_m=i)-\sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j\\
+    &= \sum_{i,j \in \{1,2,...,k\}} ijP_{ij}^n \cdot \pi_i - \sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j\\
+    &= Cov(X_0, X_n). 
+\end{align*}
+\subsection{}
+\begin{align*}
+    \lim\limits_{n\to \infty} Cov(X_n, X_{m+n}) &= \lim\limits_{n\to \infty} \sum_{i,j \in \{1,2,...,k\}} ijP_{ij}^n \cdot \pi_i - \sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j \\
+    &=\sum_{i,j \in \{1,2,...,k\}} ij\cdot \pi_j \cdot \pi_i - \sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j \\
+    &=\sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j-\sum_{i=1}^k i\pi_i \sum_{j=1}^k j\pi_j \\
+    &=0.
+\end{align*}
+\section{3.42}
+From the information of the question, we can find the transition matrix of this process:
+\begin{equation*}
+    P=
+    \begin{pmatrix}
+    states&0&1&2&3&...&k&...\\
+    0&0&1&0&0&...&0&...\\
+    1&p&0&1-p&0&...&0&...\\
+    2&0&p&0&1-p&...&0\\
+    3&0&0&p&0&...&0\\
+    \vdots&\vdots&\vdots&\vdots&\vdots&\vdots&\vdots&\vdots\\
+    k-1&0&0&0&0&...&1-p&...\\
+    k&0&0&0&0&...&0&...\\
+    \vdots&\vdots&\vdots&\vdots&\vdots&\vdots&\vdots&\vdots
+    \end{pmatrix}
+\end{equation*}
+We want the chain to be reversible, so it must satisfy:
+\begin{equation*}
+    \pi_i P_{ij} = \pi_j P{ji}, \quad \forall i,j \in {0, 1, 2, ...}.
+\end{equation*}
+So we have
+\begin{align*}
+    \pi_0 P_{0j} = 
+    \begin{cases}
+    \pi_0 \quad j=1 \\
+    0 \quad otherwise
+    \end{cases}
+    \pi_j P_{j0} = 
+    \begin{cases}
+    p\pi_j \quad j=1 \\
+    0 \quad otherwise
+    \end{cases}
+\end{align*}
+\begin{align*}
+    \pi_1 P_{1j} = 
+    \begin{cases}
+    p\pi_1 \quad j=0 \\
+    (1-p)\pi_1 \quad j=2 \\
+    0 \quad otherwise
+    \end{cases}
+    \pi_j P_{j1} = 
+    \begin{cases}
+    \pi_j \quad j=0 \\
+    p\pi_j \quad j=2 \\
+    0 \quad otherwise
+    \end{cases}
+\end{align*}
+\begin{align*}
+    \pi_i P_{ij} = 
+    \begin{cases}
+    p\pi_i \quad j=i-1 \\
+    (1-p)\pi_i \quad j=i+1 \\
+    0 \quad otherwise
+    \end{cases}
+    \pi_j P_{ji} = 
+    \begin{cases}
+    (1-p)\pi_j \quad j=i-1 \\
+    p\pi_j \quad j=i+1 \\
+    0 \quad otherwise 
+    \end{cases}
+    for\ i \geq 2.
+\end{align*}
+Solving the above equations, we can get
+\begin{align*}
+    \begin{cases}
+    \pi_0 &= p\pi_1, \\
+    \pi_i &= \frac{p}{1-p}\pi_{i+1} \quad i \geq 2.
+    \end{cases}
+\end{align*}
+So we have
+\begin{align}
+    1=\sum_{i=0}^\infty \pi_i &= \pi_0 + \frac{1}{p}\pi_0+\frac{1-p}{p^2}\pi_0 + \frac{(1-p)^2}{p^3}\pi_0 + ...\\
+    &=\lim\limits_{n\to\infty}\pi_0(1+\frac{\frac{1}{p}(1-(\frac{1-p}{p})^n)}{1-\frac{1-p}{p}}).
+\end{align}
+So $\frac{1-p}{p}<1$, thus $\frac{1}{2}<p<1$.\\
+Continue working on (4), we can get
+\begin{align*}
+    1&=\lim\limits_{n\to\infty}\pi_0(1+\frac{\frac{1}{p}(1-(\frac{1-p}{p})^n)}{1-\frac{1-p}{p}}) \\
+    &= \frac{2p}{2p-1}\pi_0.
+\end{align*}
+So
+\begin{align*}
+    \begin{cases}
+    \pi_0&=\frac{2p-1}{2p},\\
+    \pi_i &= \frac{(1-p)^{i-1}}{p^i}\pi_0,\quad i\geq 2.
+    \end{cases}
+\end{align*}
+\end{document}
