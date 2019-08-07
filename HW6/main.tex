@@ -1,0 +1,193 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{textcomp}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage{mathcomp}
+\usepackage{amsmath,amsfonts,bm}
+\usepackage{cases}
+\usepackage{amsthm, amssymb, mathtools}
+\usepackage{mathabx, mathrsfs, dsfont}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+
+\usepackage{booktabs, multirow, multicol}
+\usepackage{tabularx}
+
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear}
+
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+\DeclareMathOperator{\Softmax}{Softmax}
+
+\title{STAT 217 homework 6}
+\author{Siping Wang}
+\date{August 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{6.7}
+\subsection{}
+Let $X_1$, $X_2$, $X_3$ denote the time Ben, Max and Yolanda need to wait before being served. Then we have
+\begin{align*}
+    &X_1 \sim Exp(1) \\
+    &X_2 \sim Exp(2) \\
+    &X_3 \sim Exp(3)
+\end{align*}
+Let $M=min\{X_1, X_2, X_3\}$. Then
+\begin{equation*}
+    P(M=X_3)=\frac{3}{1+2+3}=\frac{1}{2}.
+\end{equation*}
+\subsection{}
+\begin{align*}
+    P(X_1<X_3) &= \int_0^\infty P(X_1<X_3|X_1=x)P(X_1=x)dx \\
+    &= \int_0^\infty P(X_3>x)e^{-x}dx \\
+    &= \int_0^\infty e^{-x}dx \int_x^\infty 3e^{-3y}dy\\
+    &= \int_0^\infty e^{-x} e^{-3x} dx \\
+    &= \frac{1}{4}.
+\end{align*}
+\subsection{}
+Let $M=min\{X_1, X_2, X_3\}$. Then
+\begin{align*}
+    M \sim Exp(1+2+3)=Exp(6).
+\end{align*}
+So
+\begin{equation*}
+    E(M) = \frac{1}{6}.
+\end{equation*}
+
+\section{6.13}
+\subsection{}
+\begin{align*}
+    P(N_s=k|N_t=n) &= \frac{P(N_s=k, N_t=n)}{P(N_t=n)} \\
+    &=\frac{P(N_s=k)P(N_{t-s}=n-k)}{P(N_t=n)} \\
+    &= \frac{\frac{e^{-\lambda s (\lambda s)^k}}{k!}\frac{e^{-\lambda (t-s) (\lambda (t-s))^{n-k}}}{(n-k)!}}{\frac{e^{-\lambda t (\lambda t)^n}}{n!}} \\
+    &=\frac{n!}{k!(n-k)!}\frac{s^k (t-s)^{n-k}}{t^n} \\
+    &=\dbinom{n}{k}(\frac{s}{t})^k (1-\frac{s}{t})^{n-k}.
+\end{align*}
+Thus
+\begin{equation*}
+    (N_s|N_t=n) \sim Binomial(n, \frac{s}{t}).
+\end{equation*}
+\subsection{}
+\begin{align*}
+    P(N_s=k|N_t=n) &= P(N_{s-t}=k-n) = \frac{e^{-(s-t)\lambda}((s-t)\lambda)^{k-n}}{(k-n)!}.
+\end{align*}
+
+\section{6.14}
+\begin{align*}
+    P(X=x) &= \int_0^\infty P(N_T=k|T=t)f_t(t)dt \\
+    &= \int_0^\infty \frac{e^{bt}(bt)^k}{k!}re^{-rt}dt \\
+    &= \frac{r}{r+b}(\frac{b}{r+b})^k.
+\end{align*}
+Thus, $X$ has a geometric distribution. 
+
+\section{6.21}
+\begin{align*}
+    Cov(N_s, N_t)&=E(N_tN_s)-E(N_t)E(N_s) \\
+    &= E(N_tN_s) - \lambda^2st.
+\end{align*}
+\begin{align*}
+    E(N_tN_s)&=E(E(N_tN_s|N_s)) \\
+    &= E(N_sE(N_t|N_s)) \\
+    &= E(N_s(N_s+E(N_{t-s}))) \\
+    &= E(N_s^2+(t-s)\lambdaN_s) \\
+    &= E(N_s^2) + (t-s)\lambda E(N_s) \\
+    &= (E(N_s))^2 + Var(N_s) + (t-s)\lambda E(N_s) \\
+    &= \lambda s + \lambda^2 st.
+\end{align*}
+Thus,
+\begin{align*}
+    Cov(N_t, N_s)=\lambda s + \lambda^2 st-\lambda^2 st = \lambda s.
+\end{align*}
+Thus
+\begin{align*}
+    Corr(N_t, N_s) &= \frac{Cov(N_t, N_s)}{\sqrt{Var(N_t)Var(N_s)}} \\
+    &= \frac{\lambda s}{\sqrt{\lambda t \cdot \lambda s}} \\
+    &= \sqrt{\frac{s}{t}}.
+\end{align*}
+Proved. 
+
+\section{6.24}
+\subsection{}
+Let $X_1$, $X_2$ denote the time first see a meadowlark and a sparrow. Then
+\begin{align*}
+    &X_1 \sim Exp(\lambda) \\
+    &X_2 \sim Exp(\mu)
+\end{align*}
+Then
+\begin{equation*}
+    P(X_1 < X_2) =\frac{\lambda}{\lambda+\mu}.
+\end{equation*}
+\subsection{}
+Let $N_m(t)$ denote the poisson process with parameter $\lambda$ and $N_s(t)$ denote the poisson process with parameter $\mu$. \\
+Let $N_{m+s}(t)=N_m(t)+N_s(t)$. Then $N_{m+s}$ is a poisson process with parameter $(\lambda+\mu)$.
+\begin{equation*}
+    P(N_{m+s}(1)=1)=(\lambda+\mu)e^{-(\lambda+\mu)}.
+\end{equation*}
+\subsection{}
+Since the two process are independent, 
+\begin{align*}
+    P(N_s(2)=1,N_m(2)=2)&=P(N_s(2)=1)P(N_m(2)=2)\\
+    &= \frac{2\mu e^(-2\mu)}{1!}\frac{(2\lambda)^2e^{-2\lambda}}{2!} \\
+    &= 4\mu \lambda^2 e^{-2(\lambda+\mu)}.
+\end{align*}
+
+\section{3.56}
+An absorbing Markov chain is built on $\{\o, H, HT, HTT, HTTH, HTTHH\}$, and
+\begin{align*}
+    &P(H)=\frac{1}{3} \\
+    &P(T)=\frac{2}{3}
+\end{align*}
+Thus the transition matrix is
+\begin{align*}
+    P=
+    \begin{pmatrix}
+    states&\o&H&HT&HTT&HTTH&HTTHH\\
+    \o&\frac{2}{3}&\frac{1}{3}&0&0&0&0\\
+    H&0&\frac{1}{3}&\frac{2}{3}&0&0&0\\
+    HT&0&\frac{1}{3}&0&\frac{1}{2}&0&0\\
+    HTT&\frac{2}{3}&0&0&0&\frac{1}{3}&0\\
+    HTTH&0&0&\frac{2}{3}&0&0&\frac{1}{3}\\
+    HTTHH&0&0&0&0&0&1
+    \end{pmatrix}.
+\end{align*}
+Making HTTHH an absorbing state, then
+\begin{align*}
+    F&=(I-Q)^{-1}\\
+    &=
+    \begin{pmatrix}
+    \frac{1}{3}&-\frac{1}{3}&0&0&0 \\
+    0&\frac{2}{3}&-\frac{2}{3}&0&0 \\
+    0&-\frac{1}{3}&1&-\frac{2}{3}&0 \\
+    -\frac{2}{3}&0&0&1&-\frac{1}{3} \\
+    0&0&-\frac{2}{3}&0&1
+    \end{pmatrix}^{-1}\\
+    &= 
+    \begin{pmatrix}
+    21&17.25&13.5&9&3\\
+    18&17.25&13.5&9&3\\
+    18&15.75&13.5&9&3\\
+    18&15&12&9&3\\
+    12&10.5&9&6&3
+    \end{pmatrix}.
+\end{align*}
+The row sums are
+\begin{align*}
+    \begin{matrix}
+     \o &\\ H &\\ HT &\\ HTT &\\ HTTH
+    \end{matrix}
+    \begin{pmatrix}
+    63.75\\
+    60.75\\
+    59.25\\
+    57\\
+    40.5
+    \end{pmatrix}.
+\end{align*}
+Thus, the expected number of flips to get HTTHH is 63.75.
+\end{document}
